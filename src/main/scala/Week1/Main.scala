@@ -48,28 +48,12 @@ object Main {
     * Exercise 3
     */
   def countChange(money: Int, coins: List[Int]): Int = {
-    def loop(money: Int, coins: List[Int], acc: Int): Int = {
-      def countByCoin(head: Int, tail: List[Int], subtValue: Int, acc: Int): Int = {
-        if (tail.isEmpty) {
-          if (money % head == 0) acc + 1 else acc
-        }
-        else {
-          if (subtValue > 0) {
-            if (subtValue % head  == 0)
-              countByCoin(head, tail, subtValue - tail.head, acc + 1)
-            else
-              countByCoin(head, tail, subtValue - tail.head, acc)
-          }
-          else
-            countByCoin(head, tail.tail, money, acc)
-        }
-      }
-        if (coins.tail.isEmpty) acc
-        else{
-          loop(money, coins.tail, acc + countByCoin(coins.head, coins.tail, money-coins.head, 0))
-
-        }
+    def loop(money: Int, coins: List[Int], iter: Int): Int = {
+      if (money < 0) 0
+      else if (money == 0) 1
+      else if (iter <= 0  && money > 0) 0
+      else  loop( money , coins, iter -1 ) + loop(money - coins(iter-1) , coins, iter);
     }
-    loop(money, coins, 0)
+    loop(money, coins, coins.size)
   }
 }
